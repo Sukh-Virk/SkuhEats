@@ -6,137 +6,33 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Poppins', sans-serif;
-      background-color: #f0f2f5;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    header {
-      background: linear-gradient(90deg, #3498db, #5dade2);
-      padding: 20px;
-      text-align: center;
-      color: white;
-      font-size: 2rem;
-      width: 100%;
-      font-weight: bold;
-      border-bottom: 3px solid #2980b9;
-    }
-    .content {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      margin: 30px 0 20px;
-      width: 90%;
-      max-width: 1300px;
-      justify-content: center;
-    }
-    #map {
-      width: 700px;
-      height: 500px;
-      border-radius: 20px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-      overflow: hidden;
-      border: 2px solid #ddd;
-    }
-    #sidebar {
-      width: 300px;
-      background: white;
-      padding: 20px;
-      border-radius: 20px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-      max-height: 500px;
-      overflow-y: auto;
-    }
-    #sidebar h2 {
-      font-size: 1.5rem;
-      margin-bottom: 20px;
-      color: #2c3e50;
-    }
-    .restaurant {
-      background: #f9f9f9;
-      border-radius: 10px;
-      padding: 10px;
-      margin-bottom: 15px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-    }
-    .restaurant h3 {
-      font-size: 1.1rem;
-      color: #333;
-      margin-bottom: 5px;
-    }
-    .controls {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 20px;
-      width: 90%;
-      max-width: 1000px;
-      background: white;
-      padding: 15px 20px;
-      border-radius: 15px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-    }
-    .controls input, .controls select, .controls button {
-      padding: 12px;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
-    }
-    .controls button {
-      background-color: #2979ff;
-      color: white;
-      border: none;
-      transition: background 0.3s;
-      cursor: pointer;
-    }
-    .controls button:hover {
-      background-color: #1565c0;
-    }
-    .filter-section {
-      width: 90%;
-      max-width: 1000px;
-      background: white;
-      margin-bottom: 30px;
-      padding: 20px;
-      border-radius: 20px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-    }
-    .filter-title {
-      width: 100%;
-      text-align: center;
-      font-weight: bold;
-      font-size: 1.4rem;
-      margin-bottom: 10px;
-    }
-    .filter-group {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 220px;
-    }
-    .filter-group label {
-      margin-bottom: 5px;
-      font-weight: 600;
-      font-size: 0.95rem;
-    }
-    .filter-group input[type="range"] {
-      width: 100%;
-    }
-    .filter-group input[type="checkbox"] {
-      margin: 5px;
-    }
+    body { font-family: 'Poppins', sans-serif; background-color: #f0f2f5; display: flex; flex-direction: column; align-items: center; }
+    header { background: linear-gradient(90deg, #3498db, #5dade2); padding: 20px; text-align: center; color: white; font-size: 2rem; width: 100%; font-weight: bold; border-bottom: 3px solid #2980b9; }
+    #loadingSpinner { display: none; border: 6px solid #f3f3f3; border-top: 6px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .fade-in { animation: fadeIn 0.5s ease-in forwards; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .content { display: flex; flex-wrap: wrap; gap: 20px; margin: 30px 0 20px; width: 90%; max-width: 1300px; justify-content: center; position: relative; }
+    #map { width: 700px; height: 500px; border-radius: 20px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); overflow: hidden; border: 2px solid #ddd; position: relative; }
+    #sidebar { width: 300px; background: white; padding: 20px; border-radius: 20px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); max-height: 500px; overflow-y: auto; }
+    #sidebar h2 { font-size: 1.5rem; margin-bottom: 20px; color: #2c3e50; }
+    .restaurant { background: #f9f9f9; border-radius: 10px; padding: 10px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); }
+    .restaurant h3 { font-size: 1.1rem; color: #333; margin-bottom: 5px; }
+    .controls { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; width: 90%; max-width: 1000px; background: white; padding: 15px 20px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+    .controls input, .controls select, .controls button { padding: 12px; border-radius: 10px; border: 1px solid #ccc; font-size: 1rem; }
+    .controls button { background-color: #2979ff; color: white; border: none; transition: background 0.3s; cursor: pointer; }
+    .controls button:hover { background-color: #1565c0; }
+    .filter-section { width: 90%; max-width: 1000px; background: white; margin-bottom: 30px; padding: 20px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+    .filter-title { width: 100%; text-align: center; font-weight: bold; font-size: 1.4rem; margin-bottom: 10px; }
+    .filter-group { display: flex; flex-direction: column; align-items: center; width: 220px; }
+    .filter-group label { margin-bottom: 5px; font-weight: 600; font-size: 0.95rem; }
+    .filter-group input[type="range"] { width: 100%; }
+    .filter-group input[type="checkbox"] { margin: 5px; }
   </style>
 </head>
 <body>
 
 <header>🍽️ Virkalicious Finder</header>
-
 <div class="controls">
   <input type="text" id="locationInput" placeholder="Enter City e.g. Vancouver" required>
   <select id="cuisineSelect">
@@ -153,7 +49,9 @@
 </div>
 
 <div class="content">
-  <div id="map"></div>
+  <div id="map">
+    <div id="loadingSpinner"></div>
+  </div>
   <div id="sidebar">
     <h2>🌟 Sukhman's Recommends</h2>
     <div id="restaurantList"></div>
@@ -187,79 +85,94 @@
 let map = L.map('map').setView([49.2827, -123.1207], 13);
 let markers = [];
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  attribution: '&copy; OpenStreetMap contributors'
-}).addTo(map);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap contributors' }).addTo(map);
 
-// Search Button Handler
+const spinner = document.getElementById('loadingSpinner');
 const searchBtn = document.getElementById('searchBtn');
-searchBtn.addEventListener('click', async () => {
+
+async function fetchAndDisplayRestaurants() {
   const location = document.getElementById('locationInput').value;
   const cuisine = document.getElementById('cuisineSelect').value;
   const distance = document.getElementById('distanceRange').value;
 
   if (!location) return alert("Enter a location!");
 
-  const geoRes = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(location)}`);
-  const geoData = await geoRes.json();
-  if (!geoData.length) return alert("Location not found!");
+  spinner.style.display = 'block';
 
-  const lat = geoData[0].lat;
-  const lon = geoData[0].lon;
-  map.setView([lat, lon], 14);
-
-  const query = `
-    [out:json];
-    node["amenity"~"restaurant|fast_food"](around:${distance},${lat},${lon});
-    out;
-  `;
-  const overpass = await fetch("https://overpass-api.de/api/interpreter", {
-    method: "POST",
-    body: query
-  });
-  const restaurantData = await overpass.json();
-
-  // Clear previous markers
-  markers.forEach(m => map.removeLayer(m));
-  markers = [];
-
-  let restaurants = [];
-  restaurantData.elements.forEach(place => {
-    const tags = place.tags || {};
-    const name = tags.name || "Unnamed";
-    const cuisineType = tags.cuisine || "";
-    const rating = (Math.random() * 5).toFixed(1);
-    const price = ["$", "$$", "$$$"][Math.floor(Math.random() * 3)];
-
-    if (cuisine === "all" || cuisineType.includes(cuisine)) {
-      restaurants.push({ name, cuisine: cuisineType, lat: place.lat, lon: place.lon, rating, price });
+  try {
+    const geoRes = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(location)}`);
+    const geoData = await geoRes.json();
+    if (!geoData.length) {
+      spinner.style.display = 'none';
+      return alert("Location not found!");
     }
-  });
 
-  // Filters
+    const lat = geoData[0].lat;
+    const lon = geoData[0].lon;
+    map.setView([lat, lon], 14);
+
+    const query = `[out:json];node["amenity"~"restaurant|fast_food"](around:${distance},${lat},${lon});out;`;
+    const overpass = await fetch("https://overpass-api.de/api/interpreter", { method: "POST", body: query });
+    const restaurantData = await overpass.json();
+
+    markers.forEach(m => map.removeLayer(m));
+    markers = [];
+
+    let restaurants = [];
+
+    restaurantData.elements.forEach(place => {
+      const tags = place.tags || {};
+      const name = tags.name || "Unnamed";
+      const cuisineType = tags.cuisine || "";
+      const rating = (Math.random() * 5).toFixed(1);
+      const price = ["$", "$$", "$$$"][Math.floor(Math.random() * 3)];
+
+      if (cuisine === "all" || cuisineType.includes(cuisine)) {
+        restaurants.push({ name, cuisine: cuisineType, lat: place.lat, lon: place.lon, rating, price });
+      }
+    });
+
+    applyFilters(restaurants);
+
+  } catch (err) {
+    alert("Error searching restaurants!");
+  }
+
+  spinner.style.display = 'none';
+}
+
+function applyFilters(restaurants) {
   const minRating = parseFloat(document.getElementById('ratingRange').value);
   const selectedPrices = Array.from(document.querySelectorAll('.filter-group input[type="checkbox"]:checked')).map(c => c.value);
 
-  restaurants = restaurants.filter(r => r.rating >= minRating && selectedPrices.includes(r.price));
+  let filteredRestaurants = restaurants.filter(r => r.rating >= minRating && selectedPrices.includes(r.price));
 
-  // Sort and select Top 5
-  restaurants.sort((a, b) => b.rating - a.rating);
-  restaurants = restaurants.slice(0, 5);
+  filteredRestaurants.sort((a, b) => b.rating - a.rating);
 
   const list = document.getElementById('restaurantList');
   list.innerHTML = "";
 
-  restaurants.forEach(r => {
-    const marker = L.marker([r.lat, r.lon]).addTo(map)
-      .bindPopup(`<b>${r.name}</b><br>Cuisine: ${r.cuisine}<br>Price: ${r.price}<br>Rating: ${r.rating} ⭐`);
-    markers.push(marker);
+  const top5 = [...filteredRestaurants].slice(0, 5);
 
+  top5.forEach(r => {
     const div = document.createElement('div');
-    div.className = "restaurant";
+    div.className = "restaurant fade-in";
     div.innerHTML = `<h3>${r.name}</h3><small>Cuisine: ${r.cuisine}<br>Price: ${r.price}<br>Rating: ${r.rating} ⭐</small>`;
     list.appendChild(div);
   });
-});
+
+  filteredRestaurants.forEach(r => {
+    const marker = L.marker([r.lat, r.lon]).addTo(map)
+      .bindPopup(`<b>${r.name}</b><br>Cuisine: ${r.cuisine}<br>Price: ${r.price}<br>Rating: ${r.rating} ⭐`);
+    markers.push(marker);
+  });
+}
+
+searchBtn.addEventListener('click', fetchAndDisplayRestaurants);
+document.getElementById('distanceRange').addEventListener('input', fetchAndDisplayRestaurants);
+document.getElementById('ratingRange').addEventListener('input', fetchAndDisplayRestaurants);
+const priceCheckboxes = document.querySelectorAll('.filter-group input[type="checkbox"]');
+priceCheckboxes.forEach(cb => cb.addEventListener('change', fetchAndDisplayRestaurants));
 </script>
 
 </body>
