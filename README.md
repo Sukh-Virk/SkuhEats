@@ -86,4 +86,10 @@ Building SukhEATS has deepened my appreciation for how data drives decisions, un
 ## About the Author
 
 - **Sukhman Virk**
-- A budding **dat
+
+## Link To Website
+https://sukheats.netlify.app/
+
+
+![image](https://github.com/user-attachments/assets/f0cd2a85-2696-41cc-934b-fc923ffd8755)
+
