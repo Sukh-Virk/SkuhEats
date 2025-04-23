@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>🍽️ Virkalicious Finder</title>
+  <title>🍽️ SukhEATS</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
@@ -136,7 +136,7 @@
 
 <body>
 
-  <header>🍽️ Virkalicious Finder</header>
+  <header>🍽️ SukhEATS</header>
 
   <div class="controls">
     <div style="flex:1; display:flex; flex-direction:column;">
@@ -215,8 +215,8 @@
       </select>
     </div>
     <div style="display:flex; gap:15px; justify-content:center;">
-      <button class="feature-btn" onclick="recommendRandom(false)">🎯 Get Random Pick</button>
-      <button class="feature-btn fancy-btn" onclick="recommendRandom(true)">💎 Feeling Fancy</button>
+      <button class="feature-btn" onclick="recommendRandom(false)"> Get Random Pick</button>
+      <button class="feature-btn fancy-btn" onclick="recommendRandom(true)"> Feeling Fancy</button>
     </div>
     <div class="loading-spinner" id="randomLoadingSpinner"></div>
     <div class="result-container" id="randomResult"></div>
@@ -453,15 +453,15 @@
         out.style.display='block';
         out.innerHTML = `
           <div class="random-pick-header">
-            <h3>${fancy?"💎 Fancy Pick":"🎯 Random Pick"}: ${pick.name}</h3>
+            <h3>${fancy?" Fancy Pick":" Random Pick"}: ${pick.name}</h3>
           </div>
           <div class="restaurant-details">
-            <p><strong>📍 Location:</strong> ${formattedAddress}</p>
-            <p><strong>🍽️ Cuisine:</strong> ${pick.cuisine}</p>
-            <p><strong>💲 Price:</strong> <span class="price-highlight ${classes[pick.price]}">${emojis[pick.price]}</span></p>
-            <p><strong>⭐ Rating:</strong> ${pick.rating} out of 5</p>
+            <p><strong> Location:</strong> ${formattedAddress}</p>
+            <p><strong> Cuisine:</strong> ${pick.cuisine}</p>
+            <p><strong> Price:</strong> <span class="price-highlight ${classes[pick.price]}">${emojis[pick.price]}</span></p>
+            <p><strong> Rating:</strong> ${pick.rating} out of 5</p>
             <div class="vibe-tags-container">
-              <strong>✨ Vibe:</strong> ${pick.vibe.map(v=>`<span class="vibe-tag ${v.class}">${v.name}</span>`).join("")}
+              <strong> Vibe:</strong> ${pick.vibe.map(v=>`<span class="vibe-tag ${v.class}">${v.name}</span>`).join("")}
             </div>
           </div>`;
       } catch(e) {
